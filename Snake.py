@@ -11,7 +11,7 @@ t.bgcolor('turquoise')
 t.speed(5)
 t.pensize(4)
 t.penup()
-t.goto(-320, 250)
+t.goto(-310, 250)
 t.pendown()
 t.color('black')
 t.forward(600)
@@ -27,7 +27,7 @@ t.hideturtle()
 snake = t.Turtle()
 snake.speed(0)
 snake.shape('square')
-snake.color('black')
+snake.color("black")
 snake.penup()
 snake.goto(0, 0)
 snake.direction = 'stop'
@@ -63,11 +63,11 @@ def snake_move():
 
     if snake.direction == "left":
         x = snake.xcor()
-        snake.sety(y - 20)
+        snake.setx(x - 20)
 
     if snake.direction == "right":
         x = snake.xcor()
-        snake.sety(y + 20)
+        snake.setx(x + 20)
 
 def snake_go_up():
     if snake.direction != "down":
@@ -108,5 +108,33 @@ while True:
         new_fruit.color('red')
         new_fruit.penup()
         tail.append(new_fruit)
+
+    for index in range(len(tail) -1, 0, -1):
+        a = tail[index - 1].xcor()     
+        b = tail[index - 1].ycor()
+
+        tail[index].goto(a, b)
+
+    if len(tail) > 0:
+        a = snake.xcor()  
+        b = snake.ycor()    
+        tail[0].goto(a, b)
+    snake_move()
+
+    if snake.xcor() > 280 or snake.xcor() < -300 or snake.ycor() > 240 or snake.ycor() < -240:
+        time.sleep(1)
+        screen.clear()
+        screen.bgcolor('turquoise')
+        scoring.goto(0, 0)
+        scoring.write("   Game Over \n Ваш Счёт {}".format(score), align = "center", font = ("Courier", 30, "bold"))
+
+    for food in tail:
+        if food.distance(snake) < 20:
+            time.sleep(1)
+            screen.clear()
+            screen.bgcolor('turquoise')
+            scoring.goto(0, 0)
+            scoring.write("   Game Over \n Ваш Счёт {}".format(score), align = "center", font = ("Courier", 30, "bold"))
     time.sleep(delay)
+
 t.mainloop()
